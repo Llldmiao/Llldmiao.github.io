@@ -1,0 +1,33 @@
+---
+import { getCollection } from "astro:content";
+import SiteFooter from "@/components/SiteFooter.astro";
+import SiteHeader from "@/components/SiteHeader.astro";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+
+const notes = (await getCollection("notes"))
+  .sort((a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf());
+---
+
+<BaseLayout title="Notes | Llldmiao" description="Llldmiao 的技术笔记、实验记录和个人网站系统。">
+  <SiteHeader />
+  <main id="main" class="page-shell">
+    <section class="page-hero" aria-labelledby="notes-title">
+      <p class="eyebrow">Notes</p>
+      <h1 id="notes-title">不是文章列表，是问题和系统的生长记录。</h1>
+      <p>
+        这里收纳 Markdown 和 MDX 写成的笔记、手稿、实验。普通内容保持朴素，复杂内容可以长出交互组件。
+      </p>
+    </section>
+
+    <section class="entry-list" aria-label="全部笔记">
+      {notes.map((note) => (
+        <a class="entry-row" href={`/notes/${note.id}/`}>
+          <span class="project-meta">{note.data.kind} / {note.data.status}</span>
+          <span class="project-name">{note.data.title}</span>
+          <span class="project-desc">{note.data.description}</span>
+        </a>
+      ))}
+    </section>
+  </main>
+  <SiteFooter />
+</BaseLayout>

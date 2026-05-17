@@ -1,0 +1,114 @@
+---
+import { getCollection } from "astro:content";
+import SiteFooter from "@/components/SiteFooter.astro";
+import SiteHeader from "@/components/SiteHeader.astro";
+import { focusAreas } from "@/data/focus";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+
+const projects = (await getCollection("projects"))
+  .filter((project) => project.data.featured)
+  .sort((a, b) => a.data.order - b.data.order);
+const notes = (await getCollection("notes"))
+  .sort((a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf())
+  .slice(0, 3);
+---
+
+<BaseLayout>
+  <SiteHeader />
+
+  <main id="main">
+    <section class="hero" id="top" aria-labelledby="hero-title">
+      <canvas id="hero-field" aria-hidden="true"></canvas>
+      <div class="hero-shade" aria-hidden="true"></div>
+      <div class="hero-content">
+        <p class="eyebrow">Beijing based builder</p>
+        <h1 id="hero-title">冷冷冷的喵</h1>
+        <p class="hero-kicker">Llldmiao</p>
+        <p class="hero-copy">
+          我把碎片化的兴趣做成能反复使用的工具：AI agents、A 股数据、浏览器效率、个人知识系统，以及一点点让日常工作更顺手的界面。
+        </p>
+        <div class="hero-actions" aria-label="主要操作">
+          <a class="button primary" href="#projects">看项目</a>
+          <a class="button secondary" href="https://github.com/Llldmiao">GitHub</a>
+        </div>
+      </div>
+      <div class="hero-status" aria-label="当前状态">
+        <span>Now</span>
+        <strong>把网站升级成内容系统</strong>
+      </div>
+    </section>
+
+    <section class="section intro" id="work" aria-labelledby="work-title">
+      <div class="section-heading">
+        <p class="eyebrow">Work map</p>
+        <h2 id="work-title">从工具到系统，尽量让每个想法能落地。</h2>
+      </div>
+      <div class="focus-list">
+        {focusAreas.map((item) => (
+          <article>
+            <span class="focus-index">{item.index}</span>
+            <h3>{item.title}</h3>
+            <p>{item.body}</p>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <section class="section projects" id="projects" aria-labelledby="projects-title">
+      <div class="section-heading">
+        <p class="eyebrow">Selected projects</p>
+        <h2 id="projects-title">公开项目和正在成形的工具。</h2>
+      </div>
+
+      <div class="filter-bar" aria-label="项目筛选">
+        <button class="filter-button is-active" type="button" data-filter="all">全部</button>
+        <button class="filter-button" type="button" data-filter="ai">AI</button>
+        <button class="filter-button" type="button" data-filter="market">市场</button>
+        <button class="filter-button" type="button" data-filter="utility">效率</button>
+      </div>
+
+      <div class="project-list">
+        {projects.map((project) => (
+          <a class="project-row" href={project.data.href} data-category={project.data.category.join(" ")}>
+            <span class="project-meta">{project.data.category.join(" / ")}</span>
+            <span class="project-name">{project.data.title}</span>
+            <span class="project-desc">{project.data.description}</span>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <section class="section notes" id="notes" aria-labelledby="notes-title">
+      <div class="section-heading">
+        <p class="eyebrow">Notes</p>
+        <h2 id="notes-title">笔记区会从旧 wiki 里长出新的结构。</h2>
+      </div>
+      <div class="note-strip">
+        {notes.map((note) => (
+          <a href={`/notes/${note.id}/`}>
+            <span>{note.data.kind}</span>
+            <strong>{note.data.title}</strong>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <section class="section about" id="contact" aria-labelledby="contact-title">
+      <div class="about-copy">
+        <p class="eyebrow">About</p>
+        <h2 id="contact-title">我喜欢把不稳定的灵感，做成稳定可用的东西。</h2>
+      </div>
+      <div class="contact-panel">
+        <p>
+          这里会逐步变成一个更完整的个人入口：项目、笔记、工具、实验，以及那些值得长期维护的小系统。
+        </p>
+        <div class="contact-links">
+          <a href="https://github.com/Llldmiao">GitHub</a>
+          <a href="/notes/">全部笔记</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <SiteFooter />
+</BaseLayout>

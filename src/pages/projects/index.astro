@@ -1,0 +1,31 @@
+---
+import { getCollection } from "astro:content";
+import SiteFooter from "@/components/SiteFooter.astro";
+import SiteHeader from "@/components/SiteHeader.astro";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+
+const projects = (await getCollection("projects"))
+  .sort((a, b) => a.data.order - b.data.order);
+---
+
+<BaseLayout title="Projects | Llldmiao" description="Llldmiao 的项目、工具和实验。">
+  <SiteHeader />
+  <main id="main" class="page-shell">
+    <section class="page-hero" aria-labelledby="projects-title">
+      <p class="eyebrow">Projects</p>
+      <h1 id="projects-title">工具是想法变稳定的方式。</h1>
+      <p>这里不是作品墙，而是我正在形成的工作系统：AI、市场数据、浏览器效率和个人基础设施。</p>
+    </section>
+
+    <section class="entry-list" aria-label="全部项目">
+      {projects.map((project) => (
+        <a class="entry-row" href={project.data.href}>
+          <span class="project-meta">{project.data.category.join(" / ")}</span>
+          <span class="project-name">{project.data.title}</span>
+          <span class="project-desc">{project.data.description}</span>
+        </a>
+      ))}
+    </section>
+  </main>
+  <SiteFooter />
+</BaseLayout>

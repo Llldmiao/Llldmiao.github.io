@@ -1,0 +1,39 @@
+---
+import { getCollection, render } from "astro:content";
+import SiteFooter from "@/components/SiteFooter.astro";
+import SiteHeader from "@/components/SiteHeader.astro";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+
+export async function getStaticPaths() {
+  const notes = await getCollection("notes");
+  return notes.map((note) => ({
+    params: { slug: note.id },
+    props: { note }
+  }));
+}
+
+const { note } = Astro.props;
+const { Content } = await render(note);
+const title = `${note.data.title} | Llldmiao`;
+---
+
+<BaseLayout title={title} description={note.data.description}>
+  <SiteHeader />
+  <main id="main" class="article-shell">
+    <article class="article-page">
+      <header class="article-header-block">
+        <a class="back-link" href="/notes/">Notes</a>
+        <p class="eyebrow">{note.data.kind} / {note.data.status}</p>
+        <h1>{note.data.title}</h1>
+        <p>{note.data.description}</p>
+        <time datetime={note.data.publishedAt.toISOString()}>
+          {note.data.publishedAt.toLocaleDateString("zh-CN")}
+        </time>
+      </header>
+      <div class="prose">
+        <Content />
+      </div>
+    </article>
+  </main>
+  <SiteFooter />
+</BaseLayout>

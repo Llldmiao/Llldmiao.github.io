@@ -1,0 +1,19 @@
+{
+  "name": "llldmiao-github-io",
+  "version": "0.2.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "ASTRO_TELEMETRY_DISABLED=1 astro dev",
+    "build": "ASTRO_TELEMETRY_DISABLED=1 astro build",
+    "preview": "ASTRO_TELEMETRY_DISABLED=1 astro preview",
+    "check": "npm run build"
+  },
+  "dependencies": {
+    "@astrojs/mdx": "^5.0.6",
+    "astro": "^6.3.3"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.2"
+  }
+}

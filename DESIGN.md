@@ -69,6 +69,10 @@ Dark mode:
 
 ## Implementation Notes
 
-- Ship as static HTML/CSS/JS for GitHub Pages.
-- Avoid external dependencies.
+- Current public fallback ships as static HTML/CSS/JS for GitHub Pages.
+- Source site uses Astro with Markdown/MDX content collections.
+- Put ordinary notes in `src/content/notes/*.md`.
+- Put interactive or component-rich essays in `src/content/notes/*.mdx`.
+- Put project entries in `src/content/projects/*.md`.
+- GitHub Actions builds Astro into `dist` for Pages deployment once Pages is configured for Actions.
 - Preserve accessibility: semantic landmarks, visible focus states, color contrast, keyboard-friendly controls.
