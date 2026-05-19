@@ -1,6 +1,5 @@
 const root = document.documentElement;
 const themeToggle = document.querySelector("[data-theme-toggle]");
-const themeIcon = document.querySelector("[data-theme-icon]");
 const storedTheme = localStorage.getItem("theme");
 const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
 const initialTheme = storedTheme || (prefersDark ? "dark" : "light");
@@ -8,13 +7,17 @@ const initialTheme = storedTheme || (prefersDark ? "dark" : "light");
 function setTheme(theme) {
   root.dataset.theme = theme;
   localStorage.setItem("theme", theme);
-  themeIcon.textContent = theme === "dark" ? "Light" : "Dark";
+  themeToggle?.setAttribute("aria-label", theme === "dark" ? "切换到浅色模式" : "切换到深色模式");
 }
 
 setTheme(initialTheme);
 
 themeToggle?.addEventListener("click", () => {
   setTheme(root.dataset.theme === "dark" ? "light" : "dark");
+  themeToggle.classList.remove("is-switching");
+  window.requestAnimationFrame(() => {
+    themeToggle.classList.add("is-switching");
+  });
 });
 
 const filterButtons = Array.from(document.querySelectorAll("[data-filter]"));

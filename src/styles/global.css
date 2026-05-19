@@ -105,8 +105,8 @@ button {
 }
 
 .site-header-article .theme-toggle {
-  border-color: rgba(170, 210, 220, 0.2);
-  background: rgba(255, 255, 255, 0.07);
+  border-color: rgba(170, 210, 220, 0.18);
+  background: rgba(255, 255, 255, 0.04);
 }
 
 .brand,
@@ -158,9 +158,164 @@ button {
 }
 
 .theme-toggle {
-  min-width: 70px;
-  padding: 0 14px;
+  position: relative;
+  width: 42px;
+  min-width: 42px;
+  height: 42px;
+  min-height: 42px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  padding: 0;
+  border-radius: 50%;
   color: var(--muted);
+  transition:
+    background-color 220ms ease,
+    border-color 220ms ease,
+    transform 220ms cubic-bezier(0.34, 1.56, 0.64, 1),
+    color 220ms ease;
+}
+
+.theme-toggle:hover {
+  transform: translateY(-1px) scale(1.04);
+  color: var(--accent);
+}
+
+.theme-toggle::after {
+  content: "";
+  position: absolute;
+  inset: 6px;
+  border-radius: inherit;
+  background: color-mix(in srgb, var(--accent) 16%, transparent);
+  opacity: 0;
+  transform: scale(0.4);
+}
+
+.theme-toggle.is-switching::after {
+  animation: theme-ripple 460ms ease-out;
+}
+
+.theme-toggle.is-switching .theme-toggle-orbit {
+  animation: theme-orbit-pop 520ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.theme-toggle-orbit {
+  position: relative;
+  width: 22px;
+  height: 22px;
+  display: block;
+}
+
+.theme-sun,
+.theme-moon,
+.theme-star {
+  position: absolute;
+  display: block;
+}
+
+.theme-sun {
+  inset: 3px;
+  border-radius: 50%;
+  background: currentColor;
+  box-shadow:
+    0 -10px 0 -6px currentColor,
+    0 10px 0 -6px currentColor,
+    10px 0 0 -6px currentColor,
+    -10px 0 0 -6px currentColor,
+    7px 7px 0 -6px currentColor,
+    -7px 7px 0 -6px currentColor,
+    7px -7px 0 -6px currentColor,
+    -7px -7px 0 -6px currentColor;
+  transform: rotate(0deg) scale(1);
+  opacity: 1;
+  transition:
+    opacity 260ms ease,
+    transform 520ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.theme-moon {
+  inset: 1px;
+  border: 2.5px solid currentColor;
+  border-radius: 50%;
+  opacity: 0;
+  transform: rotate(-36deg) translate(8px, 9px) scale(0.55);
+  transition:
+    opacity 240ms ease,
+    transform 520ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.theme-moon::after {
+  content: "";
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  right: -5px;
+  top: -4px;
+  border-radius: 50%;
+  background: var(--surface);
+  transition: background-color 220ms ease;
+}
+
+.site-header-article .theme-moon::after {
+  background: #162b3a;
+}
+
+.theme-star {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0;
+  transform: scale(0);
+  transition:
+    opacity 180ms ease,
+    transform 360ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.theme-star-a {
+  right: 0;
+  top: 2px;
+}
+
+.theme-star-b {
+  right: 3px;
+  bottom: 1px;
+  width: 3px;
+  height: 3px;
+}
+
+.theme-star-c {
+  left: 1px;
+  top: 8px;
+  width: 2.5px;
+  height: 2.5px;
+}
+
+:root[data-theme="dark"] .theme-toggle {
+  color: var(--accent);
+}
+
+:root[data-theme="dark"] .theme-sun {
+  opacity: 0;
+  transform: rotate(160deg) scale(0.35);
+}
+
+:root[data-theme="dark"] .theme-moon {
+  opacity: 1;
+  transform: rotate(0deg) translate(0, 0) scale(1);
+}
+
+:root[data-theme="dark"] .theme-star {
+  opacity: 0.78;
+  transform: scale(1);
+}
+
+:root[data-theme="dark"] .theme-star-b {
+  transition-delay: 70ms;
+}
+
+:root[data-theme="dark"] .theme-star-c {
+  transition-delay: 120ms;
 }
 
 .theme-toggle:hover,
@@ -858,8 +1013,10 @@ h1 {
   }
 
   .theme-toggle {
-    min-width: 62px;
-    padding-inline: 10px;
+    width: 40px;
+    min-width: 40px;
+    height: 40px;
+    min-height: 40px;
   }
 
   .site-footer {
@@ -892,5 +1049,31 @@ h1 {
     scroll-behavior: auto !important;
     transition-duration: 0.01ms !important;
     animation-duration: 0.01ms !important;
+  }
+}
+
+@keyframes theme-ripple {
+  0% {
+    opacity: 0.55;
+    transform: scale(0.38);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(1.55);
+  }
+}
+
+@keyframes theme-orbit-pop {
+  0% {
+    transform: scale(0.82) rotate(-18deg);
+  }
+
+  55% {
+    transform: scale(1.12) rotate(7deg);
+  }
+
+  100% {
+    transform: scale(1) rotate(0deg);
   }
 }

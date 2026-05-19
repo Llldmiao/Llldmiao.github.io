@@ -17,7 +17,13 @@ const { variant = "default" } = Astro.props;
     <a href="/notes/">笔记</a>
     <a href="/#contact">联系</a>
   </nav>
-  <button class="theme-toggle" type="button" aria-label="切换明暗主题" data-theme-toggle>
-    <span data-theme-icon>Dark</span>
+  <button class="theme-toggle" type="button" aria-label="切换到深色模式" title="切换主题" data-theme-toggle>
+    <span class="theme-toggle-orbit" aria-hidden="true">
+      <span class="theme-sun"></span>
+      <span class="theme-moon"></span>
+      <span class="theme-star theme-star-a"></span>
+      <span class="theme-star theme-star-b"></span>
+      <span class="theme-star theme-star-c"></span>
+    </span>
   </button>
 </header>
