@@ -13,27 +13,54 @@ export async function getStaticPaths() {
 }
 
 const { note } = Astro.props;
-const { Content } = await render(note);
+const { Content, headings } = await render(note);
 const title = `${note.data.title} | Llldmiao`;
+const publishedAt = note.data.publishedAt.toLocaleDateString("zh-CN");
+const updatedAt = note.data.updatedAt?.toLocaleDateString("zh-CN");
+const visibleHeadings = headings.filter((heading) => heading.depth === 2 || heading.depth === 3);
 ---
 
 <BaseLayout title={title} description={note.data.description}>
-  <SiteHeader />
+  <SiteHeader variant="article" />
   <main id="main" class="article-shell">
-    <article class="article-page">
-      <header class="article-header-block">
-        <a class="back-link" href="/notes/">Notes</a>
-        <p class="eyebrow">{note.data.kind} / {note.data.status}</p>
-        <h1>{note.data.title}</h1>
-        <p>{note.data.description}</p>
-        <time datetime={note.data.publishedAt.toISOString()}>
-          {note.data.publishedAt.toLocaleDateString("zh-CN")}
-        </time>
-      </header>
-      <div class="prose">
-        <Content />
+    <section class="article-hero" aria-labelledby="article-title">
+      <div class="article-hero-inner">
+        <a class="back-link article-back-link" href="/notes/">Notes</a>
+        <p class="eyebrow article-eyebrow">{note.data.kind} / {note.data.status}</p>
+        <h1 id="article-title">{note.data.title}</h1>
+        <p class="article-deck">{note.data.description}</p>
+        <div class="article-meta-line" aria-label="文章信息">
+          <time datetime={note.data.publishedAt.toISOString()}>发布于 {publishedAt}</time>
+          {updatedAt && <span>更新于 {updatedAt}</span>}
+        </div>
+        {note.data.tags.length > 0 && (
+          <div class="article-tags" aria-label="标签">
+            {note.data.tags.map((tag) => <span>{tag}</span>)}
+          </div>
+        )}
       </div>
-    </article>
+      <div class="article-hero-shape article-hero-shape-a" aria-hidden="true"></div>
+      <div class="article-hero-shape article-hero-shape-b" aria-hidden="true"></div>
+      <div class="article-hero-shape article-hero-shape-c" aria-hidden="true"></div>
+    </section>
+
+    <div class="article-reading-layout">
+      <article class="prose article-prose">
+        <Content />
+      </article>
+      {visibleHeadings.length > 0 && (
+        <aside class="article-toc" aria-label="文章目录">
+          <p>Table of Contents</p>
+          <nav>
+            {visibleHeadings.map((heading) => (
+              <a class={`toc-depth-${heading.depth}`} href={`#${heading.slug}`}>
+                {heading.text}
+              </a>
+            ))}
+          </nav>
+        </aside>
+      )}
+    </div>
   </main>
   <SiteFooter />
 </BaseLayout>

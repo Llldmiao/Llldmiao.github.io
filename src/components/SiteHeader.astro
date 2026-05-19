@@ -1,4 +1,12 @@
-<header class="site-header" aria-label="站点导航">
+---
+interface Props {
+  variant?: "default" | "article";
+}
+
+const { variant = "default" } = Astro.props;
+---
+
+<header class:list={["site-header", variant === "article" && "site-header-article"]} aria-label="站点导航">
   <a class="brand" href="/" aria-label="回到首页">
     <span class="brand-mark">Lm</span>
     <span class="brand-text">Llldmiao</span>
