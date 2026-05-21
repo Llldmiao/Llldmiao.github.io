@@ -748,9 +748,9 @@ h1 {
 }
 
 .article-hero h1 {
-  max-width: 960px;
+  max-width: var(--max);
   margin: 18px 0 0;
-  font-size: clamp(2.65rem, 4.9vw, 4.65rem);
+  font-size: clamp(2.4rem, 3.4vw, 3.65rem);
   line-height: 1.06;
   letter-spacing: 0;
   text-wrap: balance;
