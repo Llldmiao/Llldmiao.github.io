@@ -7,7 +7,8 @@
     "dev": "ASTRO_TELEMETRY_DISABLED=1 astro dev",
     "build": "ASTRO_TELEMETRY_DISABLED=1 astro build",
     "preview": "ASTRO_TELEMETRY_DISABLED=1 astro preview",
-    "check": "npm run build"
+    "check": "npm run build",
+    "sync:stock-tool": "node scripts/sync-stock-tool.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "^5.0.6",
